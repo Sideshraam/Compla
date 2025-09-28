@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Compla - BoardPro</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <style>
+    body {
+      background: #f2f2f2;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0; padding: 0;
+    }
+
+    .header {
+      background: #4db6ac;
+      color: white;
+      padding: 25px 0;
+      text-align: center;
+      font-size: 2rem;
+      font-weight: bold;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+
+    .container { margin-top: 50px; max-width: 1000px; }
+
+    .card-btn {
+      background: white;
+      border-radius: 20px;
+      padding: 40px 20px;
+      text-align: center;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+
+    .card-btn:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 12px 30px rgba(0,0,0,0.15);
+    }
+
+    .card-icon { font-size: 3rem; margin-bottom: 15px; color: #4db6ac; }
+    .card-title { font-size: 1.3rem; font-weight: bold; color: #333; }
+    .card-row { display: flex; flex-wrap: wrap; gap: 30px; justify-content: center; }
+
+    @media (max-width: 768px) { .card-btn { width: 80%; } }
+    @media (min-width: 769px) { .card-btn { width: 220px; } }
+  </style>
+</head>
+<body>
+
+<div class="header">BoardPro</div>
+<div class="container">
+  <div id="card-container" class="card-row"></div>
+</div>
+
+<script>
+const params = new URLSearchParams(window.location.search);
+const user = params.get("user");
+const container = document.getElementById("card-container");
+
+function createCard(icon, title, type) {
+  return `<div class="card-btn" onclick="goToComplaint('${type}')">
+            <i class="card-icon ${icon}"></i>
+            <div class="card-title">${title}</div>
+          </div>`;
+}
+
+if(user === "student") {
+  container.innerHTML = `
+    ${createCard('fas fa-university', 'College Complaint', 'college')}
+    ${createCard('fas fa-flask', 'College Lab Complaint', 'lab')}
+    ${createCard('fas fa-bed', 'Hostel Complaint', 'hostel')}
+  `;
+} else if(user === "host") {
+  container.innerHTML = `
+    ${createCard('fas fa-bed', 'Hostel Complaints', 'hostel')}
+    ${createCard('fas fa-eye', 'View Complaints by Students', 'view')}
+  `;
+} else if(user === "admin") {
+  container.innerHTML = `
+    ${createCard('fas fa-users', 'View All Student Complaints', 'view')}
+  `;
+} else { container.innerHTML = `<p>Invalid user!</p>`; }
+
+function goToComplaint(type) {
+  window.location.href = `complaint.html?user=${user}&type=${type}`;
+}
+</script>
+</body>
+</html>
